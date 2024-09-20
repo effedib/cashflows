@@ -19,9 +19,10 @@
                 <label for="id_importo" class="form-label">Importo</label>
                 {{ filter.form.importo }}
             </div>
-            <div class="col-md-3 d-flex align-items-end">
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-primary">Filtra</button>
                 <a href="{% url 'incassi_view' %}" class="btn btn-secondary ms-2">Reset</a>
+                <a href="{% url 'incasso_new_view' %}" class="btn btn-primary">Nuovo</a>
             </div>
         </div>
     </form>

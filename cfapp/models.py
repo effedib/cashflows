@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 
@@ -32,7 +33,7 @@ class Incasso(models.Model):
 
     importo = models.FloatField(default=0)
     data = models.DateTimeField("data ricevuta")
-    ricevuta = models.CharField(max_length=6)
+    ricevuta = models.CharField(max_length=6, unique=True)
     canale = models.CharField(choices=Canali.choices, max_length=200)
     committente = models.CharField(max_length=200)
     versato = models.BooleanField(default=False)
@@ -40,4 +41,9 @@ class Incasso(models.Model):
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
     def __str__(self):
-        return f"ricevuta: {self.ricevuta} - importo: {self.importo}"
+        return f"ricevuta: {self.ricevuta} - importo: {self.importo:.2f}"
+    
+
+    def get_absolute_url(self):
+        return reverse("incasso_detail_view", kwargs={"pk": self.ricevuta})
+    

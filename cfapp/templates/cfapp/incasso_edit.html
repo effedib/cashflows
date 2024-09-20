@@ -1,0 +1,10 @@
+{% extends "cfapp/base.html" %}
+
+{% block content %}
+<h1>Modifica Incasso</h1>
+<form action="" method="post">{% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Update">
+</form>
+<a href="{% url 'incasso_detail_view' incasso.ricevuta %}" class="btn btn-primary">Annulla</a>
+{% endblock content %}
