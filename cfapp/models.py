@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
 class Transazione(models.Model):
@@ -33,7 +34,7 @@ class Incasso(models.Model):
 
     importo = models.FloatField(default=0)
     data = models.DateTimeField("data ricevuta")
-    ricevuta = models.CharField(max_length=6, unique=True)
+    ricevuta = models.CharField(unique=True, validators=[MinLengthValidator(6), MaxLengthValidator(6)], max_length=6)
     canale = models.CharField(choices=Canali.choices, max_length=200)
     committente = models.CharField(max_length=200)
     versato = models.BooleanField(default=False)
