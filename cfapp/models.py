@@ -37,7 +37,7 @@ class Incasso(models.Model):
     canale = models.CharField(choices=Canali.choices, max_length=200)
     committente = models.CharField(max_length=200)
     versato = models.BooleanField(default=False)
-    transazione = models.ForeignKey(Transazione, on_delete=models.PROTECT, blank=True)
+    transazione = models.ForeignKey(Transazione, on_delete=models.PROTECT, blank=True, null=True)
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
     def __str__(self):
