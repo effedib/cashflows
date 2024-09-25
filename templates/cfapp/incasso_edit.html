@@ -1,10 +1,10 @@
-{% extends "cfapp/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-<h1>Cancella Incasso</h1>
+<h1>Modifica Incasso</h1>
 <form action="" method="post">{% csrf_token %}
-  <p>Sei sicuro di volere cancellare l'incasso con ricevuta: "{{ incasso.ricevuta }}"?</p>
-  <input type="submit" value="Confirm">
+  {{ form }}
+  <input type="submit" value="Update">
 </form>
 <a href="{% url 'incasso_detail_view' incasso.ricevuta %}" class="btn btn-primary">Annulla</a>
 {% endblock content %}
