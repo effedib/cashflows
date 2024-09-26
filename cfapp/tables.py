@@ -1,3 +1,4 @@
+import datetime
 import django_tables2 as tables
 from .models import Incasso
 
@@ -20,3 +21,9 @@ class IncassoTable(tables.Table):
     data = tables.DateTimeColumn(format='d/m/y')
 
     ricevuta = tables.Column(linkify=('incasso_detail_view', [tables.A('ricevuta')]))
+
+    def value_importo(self, value):
+        return float(value)
+
+    def value_data(self, value):
+        return datetime.datetime.date(value)

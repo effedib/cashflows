@@ -2,14 +2,14 @@
 
 {% block content %}
 <div class="incasso-detail">
- <h2>Ricevuta: {{ incasso.ricevuta }}</h2>
- <p>Importo: {{ incasso.importo|floatformat:2 }}</p>
- <p>Data ricevuta: {{ incasso.data }}</p>
- <p>Modalità: {{ incasso.canale }}</p>
- <p>Committente: {{ incasso.committente }}</p>
- <p>Versato: {{ incasso.versato }}</p>
- <p>Transazione bancaria: {{ incasso.transazione }}</p>
- <p>Data inserimento: {{ incasso.created_at }}</p>
+    <h2>Ricevuta: {{ incasso.ricevuta }}</h2>
+    <p>Importo: {{ incasso.importo|floatformat:2 }}</p>
+    <p>Data ricevuta: {{ incasso.data }}</p>
+    <p>Modalità: {{ incasso.canale }}</p>
+    <p>Committente: {{ incasso.committente }}</p>
+    <p>Versato: {{ incasso.versato }}</p>
+    <p>Transazione bancaria: {{ incasso.transazione }}</p>
+    <p>Data inserimento: {{ incasso.created_at }}</p>
 </div>
 
 <a href="{% url 'incasso_edit_view' incasso.pk %}" class="btn btn-primary">Modifica</a>
