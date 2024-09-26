@@ -3,15 +3,17 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
 from .models import Incasso
 from .tables import IncassoTable
 from .filters import IncassoFilter
 
-class IncassoListView(SingleTableMixin, FilterView):
+class IncassoListView(ExportMixin, SingleTableMixin, FilterView):
     table_class = IncassoTable
     model = Incasso
     template_name = "cfapp/incasso_table.html"
     filterset_class = IncassoFilter
+    export_name = "esport_incassi"
 
 
 class IncassoCreateView(CreateView):
