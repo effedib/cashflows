@@ -4,7 +4,7 @@
 <h1>Cancella Incasso</h1>
 <form action="" method="post">{% csrf_token %}
   <p>Sei sicuro di volere cancellare l'incasso con ricevuta: "{{ incasso.ricevuta }}"?</p>
-  <input type="submit" value="Confirm">
+  <input type="submit" class="btn btn-danger" value="Delete">
+  <a href="{% url 'incasso_detail_view' incasso.ricevuta %}" class="btn btn-info">Annulla</a>
 </form>
-<a href="{% url 'incasso_detail_view' incasso.ricevuta %}" class="btn btn-primary">Annulla</a>
 {% endblock content %}
