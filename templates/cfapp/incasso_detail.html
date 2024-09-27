@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="incasso-detail">
-    <h2>Ricevuta: {{ incasso.ricevuta }}</h2>
-    <p>Importo: {{ incasso.importo|floatformat:2 }}</p>
-    <p>Data ricevuta: {{ incasso.data }}</p>
-    <p>Modalità: {{ incasso.canale }}</p>
-    <p>Committente: {{ incasso.committente }}</p>
-    <p>Versato: {{ incasso.versato }}</p>
-    <p>Transazione bancaria: {{ incasso.transazione }}</p>
-    <p>Data inserimento: {{ incasso.created_at }}</p>
+<div class="card w-50 border-dark mb-3">
+    <h1 class="card-header">Ricevuta: {{ incasso.ricevuta }}</h2>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Importo: {{ incasso.importo|floatformat:2 }}</li>
+        <li class="list-group-item">Data ricevuta: {{ incasso.data }}</li>
+        <li class="list-group-item">Modalità: {{ incasso.canale }}</li>
+        <li class="list-group-item">Committente: {{ incasso.committente }}</li>
+        <li class="list-group-item">Versato: {{ incasso.versato }}</li>
+        <li class="list-group-item">Transazione bancaria: {{ incasso.transazione }}</li>
+        <li class="list-group-item">Data inserimento: {{ incasso.created_at }}</li>
+        <div class="card-body">
+            <a href="{% url 'incasso_edit_view' incasso.pk %}" class="btn btn-info">Modifica</a>
+            <a href="{% url 'incasso_delete_view' incasso.pk %}" class="btn btn-danger">Cancella</a>
+        </div>
+    </ul>
 </div>
 
-<a href="{% url 'incasso_edit_view' incasso.pk %}" class="btn btn-info">Modifica</a>
-<a href="{% url 'incasso_delete_view' incasso.pk %}" class="btn btn-danger">Cancella</a>
 
 {% endblock content %}
