@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <h1>Nuovo Incasso</h1>
 <form action="" method="post">{% csrf_token %}
-  {{ form }}
-  <input type="submit" value="Save">
+  {{ form|crispy }}
+  <input type="submit" class="btn btn-success ms-2 btn-lg" value="Inserisci">
 </form>
 {% endblock content %}
