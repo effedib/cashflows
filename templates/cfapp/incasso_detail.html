@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 <div class="card w-50 border-dark mb-3">
     <h1 class="card-header">Ricevuta: {{ incasso.ricevuta }}</h2>
@@ -14,6 +15,7 @@
         <div class="card-body">
             <a href="{% url 'incasso_edit_view' incasso.pk %}" class="btn btn-info">Modifica</a>
             <a href="{% url 'incasso_delete_view' incasso.pk %}" class="btn btn-danger">Cancella</a>
+            <a href="{% url 'incassi_view' %}" class="btn btn-secondary">Indietro</a>
         </div>
     </ul>
 </div>

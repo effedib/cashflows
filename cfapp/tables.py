@@ -22,6 +22,9 @@ class IncassoTable(tables.Table):
 
     ricevuta = tables.Column(linkify=('incasso_detail_view', [tables.A('ricevuta')]))
 
+    _  = tables.TemplateColumn(template_code='<a href="{% url \'incasso_edit_view\' record.pk %}" class="btn btn-info">Modifica</a>')
+    __ = tables.TemplateColumn(template_code='<a href="{% url \'incasso_delete_view\' record.pk %}" class="btn btn-danger">Cancella</a>')
+
     def value_importo(self, value):
         return float(value)
 

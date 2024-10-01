@@ -31,7 +31,7 @@
     {% render_table table %}
 </div>
 
-<a href="{% url 'incasso_new_view' %}" class="btn btn-primary ms-2 btn-lg">Inserisci Incasso</a>
+<a href="{% url 'incasso_new_view' %}" class="btn btn-primary ms-2">Inserisci Incasso</a>
 <div class="mt-4">
     {% load querystring from django_tables2 %}
     <a href="{% querystring '_export'='csv' %}" class="btn btn-secondary ms-2">Esporta CSV</a>

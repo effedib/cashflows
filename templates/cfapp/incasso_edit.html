@@ -6,6 +6,6 @@
 <form action="" method="post">{% csrf_token %}
   {{ form|crispy }}
   <input type="submit" class="btn btn-success" value="Update">
-  <a href="{% url 'incasso_detail_view' incasso.ricevuta %}" class="btn btn-info">Annulla</a>
+  <a href="{% url 'incassi_view' %}" class="btn btn-info">Annulla</a>
 </form>
 {% endblock content %}
