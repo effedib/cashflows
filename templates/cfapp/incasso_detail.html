@@ -5,7 +5,7 @@
 <div class="card w-50 border-dark mb-3">
     <h1 class="card-header">Ricevuta: {{ incasso.ricevuta }}</h2>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">Importo: {{ incasso.importo|floatformat:2 }}</li>
+        <li class="list-group-item">Importo: {{ incasso.importo }}</li>
         <li class="list-group-item">Data ricevuta: {{ incasso.data }}</li>
         <li class="list-group-item">Modalità: {{ incasso.canale }}</li>
         <li class="list-group-item">Committente: {{ incasso.committente }}</li>
