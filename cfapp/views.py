@@ -26,6 +26,7 @@ class IncassoUpdateView(UpdateView):
     model = Incasso
     template_name = "cfapp/incasso_edit.html"
     fields = "__all__"
+    success_url = reverse_lazy("incassi_view")
 
 
 class IncassoDeleteView(DeleteView):
