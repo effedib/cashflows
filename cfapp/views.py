@@ -20,6 +20,7 @@ class IncassoCreateView(CreateView):
     model = Incasso
     template_name = "cfapp/incasso_new.html"
     fields = "__all__"
+    success_url = reverse_lazy("incassi_view")
 
 
 class IncassoUpdateView(UpdateView):
