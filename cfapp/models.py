@@ -10,7 +10,7 @@ class Transazione(models.Model):
         verbose_name = "Transazione"
         verbose_name_plural = "Transazioni"
 
-    importo = models.FloatField(default=0)
+    importo = models.DecimalField(default=0, decimal_places=2, max_digits=8)
     tipologia = models.CharField(max_length=200)
     data = models.DateTimeField("data operazione")
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
@@ -32,7 +32,7 @@ class Incasso(models.Model):
         POS = 'POS', _('Incasso tramite POS')
 
 
-    importo = models.FloatField(default=0)
+    importo = models.DecimalField(default=0, decimal_places=2, max_digits=8)
     data = models.DateTimeField("data ricevuta")
     ricevuta = models.CharField(unique=True, validators=[MinLengthValidator(6), MaxLengthValidator(6)], max_length=6)
     canale = models.CharField(choices=Canali.choices, max_length=200)
