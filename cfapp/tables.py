@@ -30,7 +30,7 @@ class IncassoTable(tables.Table):
             "transazione",
         )
 
-    importo = ImportoColumn(attrs={"tf": {"bgcolor": "red"}})
+    importo = ImportoColumn(attrs={"tf": {"class": "fw-bold"}})
     data = tables.DateTimeColumn(format="d/m/y")
 
     ricevuta = tables.Column(linkify=("incasso_detail_view", [tables.A("ricevuta")]))
