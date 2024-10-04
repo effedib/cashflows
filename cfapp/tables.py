@@ -47,3 +47,11 @@ class IncassoTable(tables.Table):
 
     def value_data(self, value):
         return datetime.datetime.date(value)
+
+    def before_render(self, request):
+        if request.user.is_staff:
+            self.columns.show('_')
+            self.columns.show('__')
+        else:
+            self.columns.hide('_')
+            self.columns.hide('__')
