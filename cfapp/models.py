@@ -13,16 +13,16 @@ class Committenti(models.Model):
         validators=[MinLengthValidator(3), MaxLengthValidator(3)],
         max_length=3,
     )
-    nome_committente = models.CharField(unique=True, max_length=255)
+    committente = models.CharField(unique=True, max_length=255)
 
     def save(self, *args, **kwargs):
         self.codice = self.codice.upper()
-        self.nome_committente = self.nome_committente.upper()
+        self.committente = self.committente.upper()
 
         super(Committenti, self).save(*args, **kwargs)
     
     def __str__(self):
-        return f"{self.nome_committente}"
+        return f"{self.committente}"
 
 
 class Canali(models.Model):
