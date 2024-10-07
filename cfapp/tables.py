@@ -1,5 +1,3 @@
-import datetime
-
 import django_tables2 as tables
 
 from .models import Incasso
@@ -44,9 +42,6 @@ class IncassoTable(tables.Table):
 
     def value_importo(self, value):
         return float(value)
-
-    def value_data(self, value):
-        return datetime.datetime.date(value)
 
     def before_render(self, request):
         if request.user.is_staff:
