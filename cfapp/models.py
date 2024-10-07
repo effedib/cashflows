@@ -1,7 +1,45 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinLengthValidator, MaxLengthValidator
+
+
+class Committenti(models.Model):
+    class Meta:
+        verbose_name = "Committente"
+        verbose_name_plural = "Committenti"
+
+    codice = models.CharField(
+        unique=True,
+        validators=[MinLengthValidator(3), MaxLengthValidator(3)],
+        max_length=3,
+    )
+    committente = models.CharField(unique=True, max_length=255)
+
+    def save(self, *args, **kwargs):
+        self.codice = self.codice.upper()
+        self.committente = self.committente.upper()
+
+        super(Committenti, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.committente}"
+
+
+class Canali(models.Model):
+    class Meta:
+        verbose_name = "Canale"
+        verbose_name_plural = "Canali"
+
+    canale = models.CharField(unique=True, max_length=100)
+    flag_auto_versato = models.BooleanField("Il canale comprende il versamento da parte dell'esattore", default=False)
+
+    def save(self, *args, **kwargs):
+        self.canale = self.canale.capitalize()
+
+        super(Canali, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.canale}"
 
 
 class Transazione(models.Model):
@@ -10,7 +48,7 @@ class Transazione(models.Model):
         verbose_name_plural = "Transazioni"
 
     importo = models.DecimalField(default=0, decimal_places=2, max_digits=8)
-    tipologia = models.CharField(max_length=200)
+    tipologia = models.CharField(max_length=255)
     data = models.DateTimeField("data operazione")
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
@@ -23,27 +61,19 @@ class Incasso(models.Model):
         verbose_name = "Incasso"
         verbose_name_plural = "Incassi"
 
-    class Canali(models.TextChoices):
-        CONTANTI = "CO", _("Contanti")
-        ASSEGNOCIRCOLARE = "AC", _("Assegno Circolare")
-        VERSAMENTOCARTA = "CA", _("Versamento Carta Esattori")
-        POS = "POS", _("Incasso tramite POS")
-
-    class Committenti(models.TextChoices):
-        COMPASS = "COM", _("Compass Banca S.p.A.")
-        AGOS = "AGO", _("Agos Ducato S.p.A.")
-        FIDITALIA = "FID", _("Fiditalia S.p.A.")
-        COFIDIS = "CFD", _("Cofidis S.p.A.")
-
     importo = models.DecimalField(default=0, decimal_places=2, max_digits=8)
-    data = models.DateTimeField("data ricevuta")
+    data = models.DateField("data ricevuta")
     ricevuta = models.CharField(
         unique=True,
         validators=[MinLengthValidator(6), MaxLengthValidator(6)],
         max_length=6,
     )
-    canale = models.CharField(choices=Canali.choices, max_length=200)
-    committente = models.CharField(choices=Committenti.choices, max_length=200)
+    canale = models.ForeignKey(
+        Canali, on_delete=models.PROTECT, blank=True, null=True
+    )
+    committente = models.ForeignKey(
+        Committenti, on_delete=models.PROTECT, blank=True, null=True
+    )
     versato = models.BooleanField(default=False)
     transazione = models.ForeignKey(
         Transazione, on_delete=models.PROTECT, blank=True, null=True

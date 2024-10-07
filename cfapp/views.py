@@ -25,6 +25,7 @@ class IncassoListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterV
     template_name = "cfapp/incasso_table.html"
     filterset_class = IncassoFilter
     export_name = "esport_incassi"
+    exclude_columns = ['_', '__']
 
 
 class IncassoCreateView(LoginRequiredMixin, CreateView):
