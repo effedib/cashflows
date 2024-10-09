@@ -59,3 +59,19 @@ class IncassoTableTest(TestCase):
         # Verifica che le colonne siano visibili per gli utenti staff
         self.assertTrue(table.columns['_'].visible)
         self.assertTrue(table.columns['__'].visible)
+
+    def test_link_in_ricevuta_column(self):
+        request = self.factory.get('/')
+        request.user = self.user
+        table = IncassoTable(Incasso.objects.all())
+        table_html = table.as_html(request)
+        expected_url = f'/incassi/{self.incasso.ricevuta}/'
+        self.assertIn(expected_url, table_html)
+
+    def test_data_format(self):
+        request = self.factory.get('/')
+        request.user = self.user
+        table = IncassoTable(Incasso.objects.all())
+        table_html = table.as_html(request)
+        formatted_date = self.incasso.data.strftime("%d/%m/%y")
+        self.assertIn(formatted_date, table_html)
