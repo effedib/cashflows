@@ -53,7 +53,7 @@ class Transazione(models.Model):
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.id}: importo = {self.importo} - data = {self.data.strftime('%d-%m-%Y')} - tipologia = {self.tipologia}"
+        return f"{self.id}: importo = {self.importo:.2f} - data = {self.data.strftime('%d-%m-%Y')} - tipologia = {self.tipologia}"
 
 
 class Incasso(models.Model):
