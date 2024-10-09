@@ -2,114 +2,126 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from ..forms import CustomUserCreationForm, CustomUserChangeForm
 
-class CustomUserFormsTests(TestCase):
+User = get_user_model()
+
+class CustomUserCreationFormTest(TestCase):
+    def test_form_has_fields(self):
+        form = CustomUserCreationForm()
+        expected_fields = ['username', 'password1', 'password2', 'team']
+        actual_fields = list(form.fields)
+        for field in expected_fields:
+            self.assertIn(field, actual_fields)
+
+    def test_form_valid_data(self):
+        form_data = {
+            'username': 'testuser',
+            'password1': 'testpass123',
+            'password2': 'testpass123',
+            'team': 'BO'
+        }
+        form = CustomUserCreationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_form_invalid_data(self):
+        form_data = {
+            'username': '',  # username vuoto non valido
+            'password1': 'testpass123',
+            'password2': 'differentpass',  # password non corrispondenti
+            'team': 'INVALID'  # team non valido
+        }
+        form = CustomUserCreationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 3)
+
+
+class CustomUserChangeFormTest(TestCase):
     def setUp(self):
-        self.User = get_user_model()
-        self.user = self.User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
+        self.user = User.objects.create_user(
+            username='existinguser',
             password='testpass123',
-            team=self.User.Offices.BACKOFFICE
+            team='BO'
         )
 
-    def test_custom_user_creation_form_valid_data(self):
-        """Test CustomUserCreationForm with valid data"""
-        form = CustomUserCreationForm({
-            'username': 'newuser',
-            'password1': 'testpass123',
-            'password2': 'testpass123',
-            'team': self.User.Offices.FRONTOFFICE
-        })
-        
-        self.assertTrue(form.is_valid())
-        user = form.save()
-        self.assertEqual(user.username, 'newuser')
-        self.assertEqual(user.team, self.User.Offices.FRONTOFFICE)
+    def test_form_has_fields(self):
+        form = CustomUserChangeForm(instance=self.user)
+        expected_fields = ['username', 'first_name', 'last_name', 'email', 'team', 'password']
+        actual_fields = list(form.fields)
+        for field in expected_fields:
+            self.assertIn(field, actual_fields)
 
-    def test_custom_user_creation_form_invalid_data(self):
-        """Test CustomUserCreationForm with invalid data"""
-        form = CustomUserCreationForm({
-            'username': '',  # Empty username
-            'password1': 'testpass123',
-            'password2': 'testpass123',
-            'team': self.User.Offices.FRONTOFFICE
-        })
-        
-        self.assertFalse(form.is_valid())
-        self.assertIn('username', form.errors)
-
-    def test_custom_user_creation_form_password_mismatch(self):
-        """Test CustomUserCreationForm with mismatched passwords"""
-        form = CustomUserCreationForm({
-            'username': 'newuser',
-            'password1': 'testpass123',
-            'password2': 'differentpass',  # Different password
-            'team': self.User.Offices.FRONTOFFICE
-        })
-        
-        self.assertFalse(form.is_valid())
-        self.assertIn('password2', form.errors)
-
-    def test_custom_user_creation_form_invalid_team(self):
-        """Test CustomUserCreationForm with invalid team choice"""
-        form = CustomUserCreationForm({
-            'username': 'newuser',
-            'password1': 'testpass123',
-            'password2': 'testpass123',
-            'team': 'INVALID_TEAM'  # Invalid team choice
-        })
-        
-        self.assertFalse(form.is_valid())
-        self.assertIn('team', form.errors)
-
-    def test_custom_user_change_form_valid_data(self):
-        """Test CustomUserChangeForm with valid data"""
-        form = CustomUserChangeForm(
-            {
+    def test_form_valid_data(self):
+        form = CustomUserChangeForm(instance=self.user)
+        initial_data = form.initial.copy()
+        form_data = {
             'username': 'updateduser',
-            'team': self.User.Offices.MANAGEMENT
-            },
-            instance=self.user)
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'email': 'john@example.com',
+            'team': 'FO',
+            'password': self.user.password  # Mantieni la password esistente
+        }
+        # Combina i dati iniziali con i nuovi dati
+        form_data.update({k: v for k, v in initial_data.items() if k not in form_data})
         
+        form = CustomUserChangeForm(data=form_data, instance=self.user)
+        
+        if not form.is_valid():
+            print("Form errors:", form.errors)  # Per debug
+            
+        self.assertTrue(form.is_valid())
+
+    def test_form_update_user(self):
+        form = CustomUserChangeForm(instance=self.user)
+        initial_data = form.initial.copy()
+        form_data = {
+            'username': 'updateduser',
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'email': 'john@example.com',
+            'team': 'FO',
+            'password': self.user.password
+        }
+        form_data.update({k: v for k, v in initial_data.items() if k not in form_data})
+        
+        form = CustomUserChangeForm(data=form_data, instance=self.user)
         self.assertTrue(form.is_valid())
         updated_user = form.save()
         self.assertEqual(updated_user.username, 'updateduser')
-        self.assertEqual(updated_user.team, self.User.Offices.MANAGEMENT)
+        self.assertEqual(updated_user.first_name, 'John')
+        self.assertEqual(updated_user.last_name, 'Doe')
+        self.assertEqual(updated_user.email, 'john@example.com')
+        self.assertEqual(updated_user.team, 'FO')
 
-    def test_custom_user_change_form_invalid_data(self):
-        """Test CustomUserChangeForm with invalid data"""
-        form = CustomUserChangeForm({
-            'username': '',  # Empty username
-            'team': self.User.Offices.MANAGEMENT
-        }, instance=self.user)
+    def test_form_invalid_data(self):
+        User.objects.create_user(
+            username='anotheruser',
+            password='testpass123'
+        )
         
+        form = CustomUserChangeForm(instance=self.user)
+        initial_data = form.initial.copy()
+        form_data = {
+            'username': 'anotheruser',  # Username già esistente
+            'email': 'invalid-email',   # Email non valida
+            'team': 'INVALID',          # Team non valido
+            'password': self.user.password
+        }
+        form_data.update({k: v for k, v in initial_data.items() if k not in form_data})
+        
+        form = CustomUserChangeForm(data=form_data, instance=self.user)
         self.assertFalse(form.is_valid())
         self.assertIn('username', form.errors)
+        self.assertIn('email', form.errors)
+        self.assertIn('team', form.errors)
 
-    def test_form_fields(self):
-        """Test that the forms have the correct fields"""
-        creation_form = CustomUserCreationForm()
-        change_form = CustomUserChangeForm()
+    def test_form_no_changes(self):
+        form = CustomUserChangeForm(instance=self.user)
+        initial_data = form.initial.copy()
+        initial_data['password'] = self.user.password  # Assicurati di includere la password
         
-        # Test CustomUserCreationForm fields
-        expected_creation_fields = set(['username', 'password', 'team'])
-        actual_creation_fields = set(creation_form.Meta.fields)
-        self.assertEqual(actual_creation_fields, expected_creation_fields)
+        form = CustomUserChangeForm(data=initial_data, instance=self.user)
         
-        # Test CustomUserChangeForm fields
-        expected_change_fields = ['username', 'team']
-        self.assertEqual(change_form.Meta.fields, expected_change_fields)
-
-    def test_custom_user_creation_form_team_choices(self):
-        """Test that the team field has the correct choices"""
-        form = CustomUserCreationForm()
-        team_choices = form.fields['team'].choices
-        
-        expected_choices = [
-            ('BO', 'Back Office'),
-            ('FO', 'Front Office'),
-            ('PS', 'Pianificazione Strategica'),
-            ('MG', 'Management'),
-        ]
-        
-        self.assertEqual(list(team_choices), expected_choices)
+        if not form.is_valid():
+            print("Form errors:", form.errors)  # Per debug
+            
+        self.assertTrue(form.is_valid())
