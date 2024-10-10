@@ -45,8 +45,8 @@ class IncassoTable(tables.Table):
 
     def before_render(self, request):
         if request.user.is_staff:
-            self.columns.show('_')
-            self.columns.show('__')
+            self.columns.show("_")
+            self.columns.show("__")
         else:
-            self.columns.hide('_')
-            self.columns.hide('__')
+            self.columns.hide("_")
+            self.columns.hide("__")

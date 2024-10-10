@@ -4,11 +4,11 @@ from django.db import IntegrityError
 from datetime import datetime
 from ..models import Committenti, Canali, Transazione, Incasso
 
+
 class CommittentiTest(TestCase):
     def test_create_committente(self):
         committente = Committenti.objects.create(
-            codice="abc",
-            committente="Test Committente"
+            codice="abc", committente="Test Committente"
         )
         self.assertEqual(committente.codice, "ABC")
         self.assertEqual(committente.committente, "TEST COMMITTENTE")
@@ -23,12 +23,10 @@ class CommittentiTest(TestCase):
         with self.assertRaises(IntegrityError):
             Committenti.objects.create(codice="abc", committente="Test 2")
 
+
 class CanaliTest(TestCase):
     def test_create_canale(self):
-        canale = Canali.objects.create(
-            canale="test canale",
-            flag_auto_versato=True
-        )
+        canale = Canali.objects.create(canale="test canale", flag_auto_versato=True)
         self.assertEqual(canale.canale, "Test canale")
         self.assertTrue(canale.flag_auto_versato)
 
@@ -37,34 +35,34 @@ class CanaliTest(TestCase):
         with self.assertRaises(IntegrityError):
             Canali.objects.create(canale="Test Canale")
 
+
 class TransazioneTest(TestCase):
     def test_create_transazione(self):
         transazione = Transazione.objects.create(
-            importo=100.50,
-            tipologia="Test",
-            data=datetime.now()
+            importo=100.50, tipologia="Test", data=datetime.now()
         )
         self.assertEqual(float(transazione.importo), 100.50)
         self.assertEqual(transazione.tipologia, "Test")
 
     def test_str_representation(self):
         transazione = Transazione.objects.create(
-            importo=100.50,
-            tipologia="Test",
-            data=datetime(2024, 1, 1, 12, 0)
+            importo=100.50, tipologia="Test", data=datetime(2024, 1, 1, 12, 0)
         )
-        expected_str = f"{transazione.id}: importo = 100.50 - data = 01-01-2024 - tipologia = Test"
+        expected_str = (
+            f"{transazione.id}: importo = 100.50 - data = 01-01-2024 - tipologia = Test"
+        )
         self.assertEqual(str(transazione), expected_str)
+
 
 class IncassoTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.canale = Canali.objects.create(canale="Test Canale")
-        cls.committente = Committenti.objects.create(codice="ABC", committente="Test Committente")
+        cls.committente = Committenti.objects.create(
+            codice="ABC", committente="Test Committente"
+        )
         cls.transazione = Transazione.objects.create(
-            importo=100.50,
-            tipologia="Test",
-            data=datetime.now()
+            importo=100.50, tipologia="Test", data=datetime.now()
         )
 
     def test_create_incasso(self):
@@ -75,7 +73,7 @@ class IncassoTest(TestCase):
             canale=self.canale,
             committente=self.committente,
             transazione=self.transazione,
-            versato=True
+            versato=True,
         )
         self.assertEqual(float(incasso.importo), 100.50)
         self.assertEqual(incasso.ricevuta, "123456")
@@ -88,23 +86,19 @@ class IncassoTest(TestCase):
                 data=datetime.now().date(),
                 ricevuta="12345",  # Too short
                 canale=self.canale,
-                committente=self.committente
+                committente=self.committente,
             )
             incasso.full_clean()
 
     def test_str_representation(self):
         incasso = Incasso.objects.create(
-            importo=100.50,
-            data=datetime.now().date(),
-            ricevuta="123456"
+            importo=100.50, data=datetime.now().date(), ricevuta="123456"
         )
         expected_str = "ricevuta: 123456 - importo: 100.50"
         self.assertEqual(str(incasso), expected_str)
 
     def test_get_absolute_url(self):
         incasso = Incasso.objects.create(
-            importo=100.50,
-            data=datetime.now().date(),
-            ricevuta="123456"
+            importo=100.50, data=datetime.now().date(), ricevuta="123456"
         )
         self.assertEqual(incasso.get_absolute_url(), f"/incassi/{incasso.ricevuta}/")

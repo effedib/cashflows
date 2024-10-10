@@ -20,7 +20,7 @@ class Committenti(models.Model):
         self.committente = self.committente.upper()
 
         super(Committenti, self).save(*args, **kwargs)
-    
+
     def __str__(self):
         return f"{self.committente}"
 
@@ -31,13 +31,15 @@ class Canali(models.Model):
         verbose_name_plural = "Canali"
 
     canale = models.CharField(unique=True, max_length=100)
-    flag_auto_versato = models.BooleanField("Il canale comprende il versamento da parte dell'esattore", default=False)
+    flag_auto_versato = models.BooleanField(
+        "Il canale comprende il versamento da parte dell'esattore", default=False
+    )
 
     def save(self, *args, **kwargs):
         self.canale = self.canale.capitalize()
 
         super(Canali, self).save(*args, **kwargs)
-    
+
     def __str__(self):
         return f"{self.canale}"
 
@@ -68,9 +70,7 @@ class Incasso(models.Model):
         validators=[MinLengthValidator(6), MaxLengthValidator(6)],
         max_length=6,
     )
-    canale = models.ForeignKey(
-        Canali, on_delete=models.PROTECT, blank=True, null=True
-    )
+    canale = models.ForeignKey(Canali, on_delete=models.PROTECT, blank=True, null=True)
     committente = models.ForeignKey(
         Committenti, on_delete=models.PROTECT, blank=True, null=True
     )
@@ -79,7 +79,6 @@ class Incasso(models.Model):
         Transazione, on_delete=models.PROTECT, blank=True, null=True
     )
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
-    
 
     def __str__(self):
         return f"ricevuta: {self.ricevuta} - importo: {self.importo:.2f}"

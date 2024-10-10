@@ -11,4 +11,3 @@ class CustomUser(AbstractUser):
         MANAGEMENT = "MG", _("Management")
 
     team = models.CharField(max_length=50, choices=Offices, default=Offices.BACKOFFICE)
-    

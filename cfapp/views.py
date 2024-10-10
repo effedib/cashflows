@@ -16,7 +16,7 @@ class StaffRequiredMixin(UserPassesTestMixin):
         return self.request.user.is_staff
 
     def handle_no_permission(self):
-        return redirect('incassi_view')
+        return redirect("incassi_view")
 
 
 class IncassoListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
@@ -25,7 +25,7 @@ class IncassoListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterV
     template_name = "cfapp/incasso_table.html"
     filterset_class = IncassoFilter
     export_name = "esport_incassi"
-    exclude_columns = ['_', '__']
+    exclude_columns = ["_", "__"]
 
 
 class IncassoCreateView(LoginRequiredMixin, CreateView):
@@ -53,5 +53,4 @@ class IncassoDetailView(LoginRequiredMixin, DetailView):
     template_name = "cfapp/incasso_detail.html"
 
     def get_object(self):
-        return get_object_or_404(Incasso, ricevuta=self.kwargs['pk'])
-
+        return get_object_or_404(Incasso, ricevuta=self.kwargs["pk"])

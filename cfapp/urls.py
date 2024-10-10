@@ -6,7 +6,7 @@ from .views import (
     IncassoCreateView,
     IncassoUpdateView,
     IncassoDeleteView,
-    )
+)
 
 urlpatterns = [
     path("", IncassoListView.as_view(), name="incassi_view"),

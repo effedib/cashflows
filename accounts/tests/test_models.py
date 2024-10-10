@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+
 class CustomUserTests(TestCase):
     def test_create_user(self):
         User = get_user_model()
@@ -8,7 +9,7 @@ class CustomUserTests(TestCase):
             username="testuser",
             email="test@example.com",
             password="testpass123",
-            team=User.Offices.BACKOFFICE
+            team=User.Offices.BACKOFFICE,
         )
         self.assertEqual(user.username, "testuser")
         self.assertEqual(user.email, "test@example.com")
