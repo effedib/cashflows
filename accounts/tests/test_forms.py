@@ -1,11 +1,15 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from ..forms import CustomUserCreationForm, CustomUserChangeForm
+from ..models import Office
 
 User = get_user_model()
 
 
 class CustomUserCreationFormTest(TestCase):
+    def setUp(self):
+        self.office = Office.objects.create(name="Test Office")
+
     def test_form_has_fields(self):
         form = CustomUserCreationForm()
         expected_fields = ["username", "password1", "password2", "team"]
@@ -18,7 +22,7 @@ class CustomUserCreationFormTest(TestCase):
             "username": "testuser",
             "password1": "testpass123",
             "password2": "testpass123",
-            "team": "BO",
+            "team": self.office,
         }
         form = CustomUserCreationForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -37,8 +41,9 @@ class CustomUserCreationFormTest(TestCase):
 
 class CustomUserChangeFormTest(TestCase):
     def setUp(self):
+        self.office = Office.objects.create(name="Test Office")
         self.user = User.objects.create_user(
-            username="existinguser", password="testpass123", team="BO"
+            username="existinguser", password="testpass123", team=self.office
         )
 
     def test_form_has_fields(self):
@@ -63,7 +68,7 @@ class CustomUserChangeFormTest(TestCase):
             "first_name": "John",
             "last_name": "Doe",
             "email": "john@example.com",
-            "team": "FO",
+            "team": self.office,
             "password": self.user.password,  # Mantieni la password esistente
         }
         # Combina i dati iniziali con i nuovi dati
@@ -84,7 +89,7 @@ class CustomUserChangeFormTest(TestCase):
             "first_name": "John",
             "last_name": "Doe",
             "email": "john@example.com",
-            "team": "FO",
+            "team": self.office,
             "password": self.user.password,
         }
         form_data.update({k: v for k, v in initial_data.items() if k not in form_data})
@@ -96,7 +101,7 @@ class CustomUserChangeFormTest(TestCase):
         self.assertEqual(updated_user.first_name, "John")
         self.assertEqual(updated_user.last_name, "Doe")
         self.assertEqual(updated_user.email, "john@example.com")
-        self.assertEqual(updated_user.team, "FO")
+        self.assertEqual(updated_user.team, self.office)
 
     def test_form_invalid_data(self):
         User.objects.create_user(username="anotheruser", password="testpass123")

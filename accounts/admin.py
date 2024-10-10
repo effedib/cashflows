@@ -16,13 +16,13 @@ class CustomUserAdmin(UserAdmin):
         "team",
         "is_staff",
     ]
-    list_filter = ('team', "is_staff")
-    search_fields = ('username', 'email')
+    list_filter = ("team", "is_staff")
+    search_fields = ("username", "email")
     fieldsets = UserAdmin.fieldsets + ((None, {"fields": ("team",)}),)
     add_fieldsets = UserAdmin.add_fieldsets + ((None, {"fields": ("team",)}),)
 
 
 @admin.register(Office)
 class OfficeAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
+    list_display = ("name",)
+    search_fields = ("name",)
