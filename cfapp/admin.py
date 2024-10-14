@@ -4,8 +4,8 @@ from .models import Incasso, Transazione, Committenti, Canali, TipologiaTransazi
 
 
 class IncassoInline(admin.TabularInline):
-    model = Incasso
-    extra = 1
+    model = Incasso.transazione.through
+    extra = 0
 
 
 @admin.register(TipologiaTransazione)
@@ -29,13 +29,14 @@ class TransazioneAdmin(admin.ModelAdmin):
 
 @admin.register(Incasso)
 class IncassoAdmin(admin.ModelAdmin):
+    inlines = [IncassoInline]
+    exclude= ["transazione"]
     list_display = (
         "importo",
         "data",
         "ricevuta",
         "canale",
         "committente",
-        "transazione",
         "versato",
     )
     list_filter = (
@@ -45,8 +46,6 @@ class IncassoAdmin(admin.ModelAdmin):
         "canale",
         "committente",
         "versato",
-        "transazione__data",
-        "transazione__tipologia",
     )
     search_fields = (
         "importo",
