@@ -48,14 +48,14 @@ class TipologiaTransazione(models.Model):
     class Meta:
         verbose_name = "Tipologia transazione"
         verbose_name_plural = "Tipologie transazioni"
-    
+
     tipologia_transazione = models.CharField(unique=True, max_length=255)
 
     def save(self, *args, **kwargs):
         self.tipologia_transazione = self.tipologia_transazione.capitalize()
 
         super(TipologiaTransazione, self).save(*args, **kwargs)
-    
+
     def __str__(self):
         return f"{self.tipologia_transazione}"
 
@@ -66,12 +66,17 @@ class Transazione(models.Model):
         verbose_name_plural = "Transazioni"
 
     importo = models.DecimalField(decimal_places=2, max_digits=8)
-    tipologia = models.ForeignKey(TipologiaTransazione, on_delete=models.PROTECT, blank=True, related_name="tipologia")
+    tipologia = models.ForeignKey(
+        TipologiaTransazione,
+        on_delete=models.PROTECT,
+        blank=True,
+        related_name="tipologia",
+    )
     data = models.DateField("data operazione")
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.importo:.2f} - {self.data.strftime('%d-%m-%Y')} - {self.tipologia}"
+        return f"{self.tipologia}"
 
 
 class Incasso(models.Model):
@@ -92,7 +97,11 @@ class Incasso(models.Model):
     )
     versato = models.BooleanField(default=False)
     transazione = models.ForeignKey(
-        Transazione, on_delete=models.PROTECT, blank=True, null=True, related_name="transazioni"
+        Transazione,
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        related_name="transazioni",
     )
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
