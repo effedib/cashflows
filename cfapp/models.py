@@ -44,18 +44,34 @@ class Canali(models.Model):
         return f"{self.canale}"
 
 
+class TipologiaTransazione(models.Model):
+    class Meta:
+        verbose_name = "Tipologia transazione"
+        verbose_name_plural = "Tipologie transazioni"
+    
+    tipologia_transazione = models.CharField(unique=True, max_length=255)
+
+    def save(self, *args, **kwargs):
+        self.tipologia_transazione = self.tipologia_transazione.capitalize()
+
+        super(TipologiaTransazione, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.tipologia_transazione}"
+
+
 class Transazione(models.Model):
     class Meta:
         verbose_name = "Transazione"
         verbose_name_plural = "Transazioni"
 
-    importo = models.DecimalField(default=0, decimal_places=2, max_digits=8)
-    tipologia = models.CharField(max_length=255)
-    data = models.DateTimeField("data operazione")
+    importo = models.DecimalField(decimal_places=2, max_digits=8)
+    tipologia = models.ForeignKey(TipologiaTransazione, on_delete=models.PROTECT, blank=True, related_name="tipologia")
+    data = models.DateField("data operazione")
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.id}: importo = {self.importo:.2f} - data = {self.data.strftime('%d-%m-%Y')} - tipologia = {self.tipologia}"
+        return f"{self.importo:.2f} - {self.data.strftime('%d-%m-%Y')} - {self.tipologia}"
 
 
 class Incasso(models.Model):
@@ -63,7 +79,7 @@ class Incasso(models.Model):
         verbose_name = "Incasso"
         verbose_name_plural = "Incassi"
 
-    importo = models.DecimalField(default=0, decimal_places=2, max_digits=8)
+    importo = models.DecimalField(decimal_places=2, max_digits=8)
     data = models.DateField("data ricevuta")
     ricevuta = models.CharField(
         unique=True,
@@ -76,7 +92,7 @@ class Incasso(models.Model):
     )
     versato = models.BooleanField(default=False)
     transazione = models.ForeignKey(
-        Transazione, on_delete=models.PROTECT, blank=True, null=True
+        Transazione, on_delete=models.PROTECT, blank=True, null=True, related_name="transazioni"
     )
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
