@@ -76,7 +76,7 @@ class Transazione(models.Model):
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.tipologia}"
+        return f"{self.tipologia} / €{self.importo} / {self.data}"
 
 
 class Incasso(models.Model):
@@ -96,11 +96,9 @@ class Incasso(models.Model):
         Committenti, on_delete=models.PROTECT, blank=True, null=True
     )
     versato = models.BooleanField(default=False)
-    transazione = models.ForeignKey(
+    transazione = models.ManyToManyField(
         Transazione,
-        on_delete=models.PROTECT,
         blank=True,
-        null=True,
         related_name="transazioni",
     )
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
