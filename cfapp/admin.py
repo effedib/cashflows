@@ -30,7 +30,7 @@ class TransazioneAdmin(admin.ModelAdmin):
 @admin.register(Incasso)
 class IncassoAdmin(admin.ModelAdmin):
     inlines = [IncassoInline]
-    exclude= ["transazione"]
+    exclude = ["transazione"]
     list_display = (
         "importo",
         "data",

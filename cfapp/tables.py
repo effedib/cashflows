@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from .models import Incasso
+from .models import Incasso, Transazione
 
 
 class ImportoColumn(tables.Column):
@@ -25,7 +25,6 @@ class IncassoTable(tables.Table):
             "canale",
             "committente",
             "versato",
-            "transazione",
         )
 
     importo = ImportoColumn(attrs={"tf": {"class": "fw-bold"}})
@@ -38,6 +37,43 @@ class IncassoTable(tables.Table):
     )
     __ = tables.TemplateColumn(
         template_code='<a href="{% url \'incasso_delete_view\' record.pk %}" class="btn btn-danger">Cancella</a>'
+    )
+
+    def value_importo(self, value):
+        return float(value)
+
+    def before_render(self, request):
+        if request.user.is_staff:
+            self.columns.show("_")
+            self.columns.show("__")
+        else:
+            self.columns.hide("_")
+            self.columns.hide("__")
+
+
+class TransazioneTable(tables.Table):
+    class Meta:
+        model = Transazione
+        order_by = "data"
+        orderable = True
+        template_name = "django_tables2/bootstrap.html"
+        fields = (
+            "data",
+            "importo",
+            "tipologia",
+        )
+
+    importo = ImportoColumn(attrs={"tf": {"class": "fw-bold"}})
+    data = tables.DateTimeColumn(format="d/m/y")
+
+    ___ = tables.TemplateColumn(
+        template_code='<a href="{% url \'transazione_detail_view\' record.pk %}" class="btn btn-success">Dettaglio</a>'
+    )
+    _ = tables.TemplateColumn(
+        template_code='<a href="{% url \'transazione_edit_view\' record.pk %}" class="btn btn-info">Modifica</a>'
+    )
+    __ = tables.TemplateColumn(
+        template_code='<a href="{% url \'transazione_delete_view\' record.pk %}" class="btn btn-danger">Cancella</a>'
     )
 
     def value_importo(self, value):

@@ -31,25 +31,25 @@ class IncassoViewsTest(TestCase):
 
     def test_list_view_redirect_if_not_logged_in(self):
         response = self.client.get(reverse("incassi_view"))
-        self.assertRedirects(response, "/accounts/login/?next=/incassi/")
+        self.assertRedirects(response, "/accounts/login/?next=/cfapp/incassi/")
 
     def test_list_view_logged_in(self):
         self.client.login(username="testuser", password="testpass123")
         response = self.client.get(reverse("incassi_view"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "cfapp/incasso_table.html")
+        self.assertTemplateUsed(response, "cfapp/incassi/incasso_table.html")
 
     def test_create_view(self):
         self.client.login(username="testuser", password="testpass123")
         response = self.client.get(reverse("incasso_new_view"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "cfapp/incasso_new.html")
+        self.assertTemplateUsed(response, "cfapp/incassi/incasso_new.html")
 
     def test_update_view(self):
         self.client.login(username="testuser", password="testpass123")
         response = self.client.get(reverse("incasso_edit_view", args=[self.incasso.pk]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "cfapp/incasso_edit.html")
+        self.assertTemplateUsed(response, "cfapp/incassi/incasso_edit.html")
 
     def test_delete_view_staff_only(self):
         # Test with regular user
@@ -65,7 +65,7 @@ class IncassoViewsTest(TestCase):
             reverse("incasso_delete_view", args=[self.incasso.pk])
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "cfapp/incasso_delete.html")
+        self.assertTemplateUsed(response, "cfapp/incassi/incasso_delete.html")
 
     def test_detail_view(self):
         self.client.login(username="testuser", password="testpass123")
@@ -73,5 +73,5 @@ class IncassoViewsTest(TestCase):
             reverse("incasso_detail_view", args=[self.incasso.ricevuta])
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "cfapp/incasso_detail.html")
+        self.assertTemplateUsed(response, "cfapp/incassi/incasso_detail.html")
         self.assertEqual(response.context["object"], self.incasso)

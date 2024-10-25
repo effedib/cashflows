@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Cancella Transazione</h1>
+<form action="" method="post">
+  {% csrf_token %}
+  <p>Sei sicuro di volere cancellare la transazione seguente?</p>
+  <p><strong>Importo:</strong> {{ transazione.importo }}</p>
+  <p><strong>Data:</strong> {{ transazione.data }}</p>
+  <p><strong>Tipologia Transazione:</strong> {{ transazione.tipologia }}</p>
+  <input type="submit" class="btn btn-danger" value="Delete">
+  <a href="{% url 'transazioni_view' %}" class="btn btn-info">Annulla</a>
+</form>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card w-75 border-dark mb-3 mx-auto">
+    <h1 class="card-header bg-primary text-white">Importo Transazione: {{ transazione.importo }}</h1>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Data:</strong> {{ transazione.data }}</li>
+        <li class="list-group-item"><strong>Tipologia Transazione:</strong> {{ transazione.tipologia }}</li>
+        <div class="card-body text-center">
+            <a href="{% url 'transazione_edit_view' transazione.pk %}" class="btn btn-info mx-1">Modifica</a>
+            <a href="{% url 'transazione_delete_view' transazione.pk %}" class="btn btn-danger mx-1">Cancella</a>
+            <a href="{% url 'transazioni_view' %}" class="btn btn-secondary mx-1">Indietro</a>
+        </div>
+    </ul>
+</div>
+
+<div class="container">
+    <h2 class="mt-4">Incassi collegati</h2>
+    <div class="row">
+    {% for incasso in transazione.transazioni.all %}
+        <div class="col-md-6 mb-3">
+            <div class="card border-dark">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Ricevuta:</strong> {{ incasso.ricevuta }}</li>
+                    <li class="list-group-item"><strong>Importo:</strong> {{ incasso.importo }}</li>
+                    <li class="list-group-item"><strong>Data ricevuta:</strong> {{ incasso.data }}</li>
+                    <li class="list-group-item"><strong>Modalità:</strong> {{ incasso.canale }}</li>
+                    <li class="list-group-item"><strong>Committente:</strong> {{ incasso.committente }}</li>
+                    <li class="list-group-item"><strong>Data inserimento:</strong> {{ incasso.created_at }}</li>
+                    <li class="list-group-item"><strong>Versato:</strong>
+                        {% if incasso.versato %}
+                            <i class="fas fa-money-bill-alt text-success"></i>
+                        {% else %}
+                            <i class="fas fa-thumbs-down text-danger"></i>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock content %}
