@@ -56,7 +56,9 @@ class IncassoDetailView(LoginRequiredMixin, DetailView):
         return get_object_or_404(Incasso, ricevuta=self.kwargs["pk"])
 
 
-class TransazioneListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
+class TransazioneListView(
+    LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView
+):
     table_class = TransazioneTable
     model = Transazione
     template_name = "cfapp/transazioni/transazione_table.html"

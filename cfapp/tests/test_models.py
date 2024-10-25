@@ -38,7 +38,9 @@ class CanaliTest(TestCase):
 
 class TransazioneTest(TestCase):
     def setUp(self):
-        self.tipo_transazione = TipologiaTransazione.objects.create(tipologia_transazione="Test")
+        self.tipo_transazione = TipologiaTransazione.objects.create(
+            tipologia_transazione="Test"
+        )
 
     def test_create_transazione(self):
         transazione = Transazione.objects.create(
@@ -48,13 +50,12 @@ class TransazioneTest(TestCase):
         self.assertEqual(str(transazione.tipologia), "Test")
 
     def test_str_representation(self):
-        
         transazione = Transazione.objects.create(
-            importo=100.50, tipologia=self.tipo_transazione, data=datetime(2024, 1, 1, 12, 0)
+            importo=100.50,
+            tipologia=self.tipo_transazione,
+            data=datetime(2024, 1, 1, 12, 0),
         )
-        expected_str = (
-            "Test / €100.50 / 01-01-2024"
-        )
+        expected_str = "Test / €100.50 / 01-01-2024"
         self.assertEqual(str(transazione), expected_str)
 
 
@@ -68,7 +69,7 @@ class IncassoTest(TestCase):
         cls.transazione = Transazione.objects.create(
             importo=100.50,
             data=datetime.now(),
-            tipologia=TipologiaTransazione.objects.create(tipologia_transazione="Test")
+            tipologia=TipologiaTransazione.objects.create(tipologia_transazione="Test"),
         )
 
     def test_create_incasso(self):

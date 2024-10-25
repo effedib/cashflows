@@ -76,7 +76,6 @@ class TransazioneTable(tables.Table):
         template_code='<a href="{% url \'transazione_delete_view\' record.pk %}" class="btn btn-danger">Cancella</a>'
     )
 
-
     def value_importo(self, value):
         return float(value)
 
