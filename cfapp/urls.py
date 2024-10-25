@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic.base import RedirectView
 
 from .views import (
     IncassoListView,
@@ -14,6 +15,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path("", RedirectView.as_view(url="incassi/", permanent=True)),
     path("incassi/", IncassoListView.as_view(), name="incassi_view"),
     path("incassi/new/", IncassoCreateView.as_view(), name="incasso_new_view"),
     path("incassi/<str:pk>/", IncassoDetailView.as_view(), name="incasso_detail_view"),
