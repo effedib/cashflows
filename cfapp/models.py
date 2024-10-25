@@ -96,7 +96,7 @@ class Incasso(models.Model):
     committente = models.ForeignKey(
         Committenti, on_delete=models.PROTECT, blank=True, null=True
     )
-    versato = models.BooleanField(default=False)
+    versato = models.BooleanField(default=False, blank=True, null=True)
     transazione = models.ManyToManyField(
         Transazione,
         blank=True,

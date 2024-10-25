@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Elenco Transazioni</h2>
+
+<!-- Form per i filtri -->
+<form method="get" class="mb-auto">
+    <div class="row">
+        <div class="col-md-auto">
+            <label for="id_data" class="form-label">Data</label>
+            {{ filter.form.data }}
+        </div>
+        <div class="col-md-auto">
+            <label for="id_importo" class="form-label">Importo</label>
+            {{ filter.form.importo }}
+        </div>
+        <div class="col-md-auto">
+            <label for="id_tipologia" class="form-label">Tipologia</label>
+            {{ filter.form.tipologia }}
+        </div>
+        <div class="col-md-auto">
+            <button type="submit" class="btn btn-primary">Filtra</button>
+            <a href="{% url 'transazioni_view' %}" class="btn btn-secondary ms-2">Reset</a>
+        </div>
+    </div>
+</form>
+
+<!-- Tabella transazioni -->
+<div class="table-responsive">
+    {% load render_table from django_tables2 %}
+    {% render_table table %}
+</div>
+
+<a href="{% url 'transazione_new_view' %}" class="btn btn-primary ms-2">Inserisci Transazione</a>
+<div class="mt-4">
+    {% load querystring from django_tables2 %}
+    <a href="{% querystring '_export'='csv' %}" class="btn btn-secondary ms-2">Esporta CSV</a>
+    <a href="{% querystring '_export'='xlsx' %}" class="btn btn-secondary ms-2">Esporta XLSX</a>
+</div>
+{% endblock %}

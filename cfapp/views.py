@@ -6,9 +6,9 @@ from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from .models import Incasso
-from .tables import IncassoTable
-from .filters import IncassoFilter
+from .models import Incasso, Transazione
+from .tables import IncassoTable, TransazioneTable
+from .filters import IncassoFilter, TransazioneFilter
 
 
 class StaffRequiredMixin(UserPassesTestMixin):
@@ -22,7 +22,7 @@ class StaffRequiredMixin(UserPassesTestMixin):
 class IncassoListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     table_class = IncassoTable
     model = Incasso
-    template_name = "cfapp/incasso_table.html"
+    template_name = "cfapp/incassi/incasso_table.html"
     filterset_class = IncassoFilter
     export_name = "esport_incassi"
     exclude_columns = ["_", "__"]
@@ -30,27 +30,64 @@ class IncassoListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterV
 
 class IncassoCreateView(LoginRequiredMixin, CreateView):
     model = Incasso
-    template_name = "cfapp/incasso_new.html"
+    template_name = "cfapp/incassi/incasso_new.html"
     fields = "__all__"
     success_url = reverse_lazy("incassi_view")
 
 
 class IncassoUpdateView(LoginRequiredMixin, UpdateView):
     model = Incasso
-    template_name = "cfapp/incasso_edit.html"
+    template_name = "cfapp/incassi/incasso_edit.html"
     fields = "__all__"
     success_url = reverse_lazy("incassi_view")
 
 
 class IncassoDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
     model = Incasso
-    template_name = "cfapp/incasso_delete.html"
+    template_name = "cfapp/incassi/incasso_delete.html"
     success_url = reverse_lazy("incassi_view")
 
 
 class IncassoDetailView(LoginRequiredMixin, DetailView):
     model = Incasso
-    template_name = "cfapp/incasso_detail.html"
+    template_name = "cfapp/incassi/incasso_detail.html"
 
     def get_object(self):
         return get_object_or_404(Incasso, ricevuta=self.kwargs["pk"])
+
+
+class TransazioneListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
+    table_class = TransazioneTable
+    model = Transazione
+    template_name = "cfapp/transazioni/transazione_table.html"
+    filterset_class = TransazioneFilter
+    export_name = "esport_transazioni"
+    exclude_columns = ["_", "__", "___"]
+
+
+class TransazioneCreateView(LoginRequiredMixin, CreateView):
+    model = Transazione
+    template_name = "cfapp/transazioni/transazione_new.html"
+    fields = "__all__"
+    success_url = reverse_lazy("transazioni_view")
+
+
+class TransazioneUpdateView(LoginRequiredMixin, UpdateView):
+    model = Transazione
+    template_name = "cfapp/transazioni/transazione_edit.html"
+    fields = "__all__"
+    success_url = reverse_lazy("transazioni_view")
+
+
+class TransazioneDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+    model = Transazione
+    template_name = "cfapp/transazioni/transazione_delete.html"
+    success_url = reverse_lazy("transazioni_view")
+
+
+class TransazioneDetailView(LoginRequiredMixin, DetailView):
+    model = Transazione
+    template_name = "cfapp/transazioni/transazione_detail.html"
+
+    def get_object(self):
+        return get_object_or_404(Transazione, id=self.kwargs["pk"])

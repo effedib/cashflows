@@ -1,5 +1,5 @@
 import django_filters
-from .models import Incasso
+from .models import Incasso, Transazione
 
 
 class IncassoFilter(django_filters.FilterSet):
@@ -12,5 +12,14 @@ class IncassoFilter(django_filters.FilterSet):
             "canale",
             "committente",
             "versato",
-            "transazione",
+        ]
+
+
+class TransazioneFilter(django_filters.FilterSet):
+    class Meta:
+        model = Transazione
+        fields = [
+            "data",
+            "importo",
+            "tipologia",
         ]
