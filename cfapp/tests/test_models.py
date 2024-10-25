@@ -109,4 +109,4 @@ class IncassoTest(TestCase):
         incasso = Incasso.objects.create(
             importo=100.50, data=datetime.now().date(), ricevuta="123456"
         )
-        self.assertEqual(incasso.get_absolute_url(), f"/incassi/{incasso.ricevuta}/")
+        self.assertEqual(incasso.get_absolute_url(), f"/cfapp/incassi/{incasso.ricevuta}/")
