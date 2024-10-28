@@ -65,4 +65,4 @@ cashflows/
 
 ## License
 
-GNU General Public License (GPL)
+GNU General Public License (GPL) v3
