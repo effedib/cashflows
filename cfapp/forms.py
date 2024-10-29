@@ -18,3 +18,15 @@ class TransazioneForm(forms.ModelForm):
         if commit:
             transazione.incassi.set(self.cleaned_data["incassi"])
         return transazione
+
+
+class IncassoForm(forms.ModelForm):
+    transazioni = forms.ModelMultipleChoiceField(
+        queryset=Transazione.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    class Meta:
+        model = Incasso
+        fields = "__all__"

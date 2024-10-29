@@ -9,7 +9,7 @@ from django_tables2.export.views import ExportMixin
 from .models import Incasso, Transazione
 from .tables import IncassoTable, TransazioneTable
 from .filters import IncassoFilter, TransazioneFilter
-from .forms import TransazioneForm
+from .forms import TransazioneForm, IncassoForm
 
 
 class StaffRequiredMixin(UserPassesTestMixin):
@@ -31,15 +31,15 @@ class IncassoListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterV
 
 class IncassoCreateView(LoginRequiredMixin, CreateView):
     model = Incasso
+    form_class = IncassoForm
     template_name = "cfapp/incassi/incasso_new.html"
-    fields = "__all__"
     success_url = reverse_lazy("incassi_view")
 
 
 class IncassoUpdateView(LoginRequiredMixin, UpdateView):
     model = Incasso
+    form_class = IncassoForm
     template_name = "cfapp/incassi/incasso_edit.html"
-    fields = "__all__"
     success_url = reverse_lazy("incassi_view")
 
 
@@ -72,7 +72,6 @@ class TransazioneCreateView(LoginRequiredMixin, CreateView):
     model = Transazione
     form_class = TransazioneForm
     template_name = "cfapp/transazioni/transazione_new.html"
-    # fields = "__all__"
     success_url = reverse_lazy("transazioni_view")
 
 
@@ -80,7 +79,6 @@ class TransazioneUpdateView(LoginRequiredMixin, UpdateView):
     model = Transazione
     form_class = TransazioneForm
     template_name = "cfapp/transazioni/transazione_edit.html"
-    # fields = "__all__"
     success_url = reverse_lazy("transazioni_view")
 
 
