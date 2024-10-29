@@ -79,10 +79,9 @@ class IncassoTest(TestCase):
             ricevuta="123456",
             canale=self.canale,
             committente=self.committente,
-            # transazione=self.transazione,
             versato=True,
         )
-        incasso.transazione.set((self.transazione,))
+        incasso.transazioni.set((self.transazione,))
         self.assertEqual(float(incasso.importo), 100.50)
         self.assertEqual(incasso.ricevuta, "123456")
         self.assertTrue(incasso.versato)
