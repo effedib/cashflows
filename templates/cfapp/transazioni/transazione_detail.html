@@ -17,7 +17,7 @@
 <div class="container">
     <h2 class="mt-4">Incassi collegati</h2>
     <div class="row">
-    {% for incasso in transazione.transazioni.all %}
+    {% for incasso in transazione.incasso_set.all %}
         <div class="col-md-6 mb-3">
             <div class="card border-dark">
                 <ul class="list-group list-group-flush">
