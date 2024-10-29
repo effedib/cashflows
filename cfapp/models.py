@@ -97,9 +97,8 @@ class Incasso(models.Model):
         Committenti, on_delete=models.PROTECT, blank=True, null=True
     )
     versato = models.BooleanField(default=False, blank=True, null=True)
-    transazione = models.ManyToManyField(
-        Transazione,
-        blank=True,
+    transazioni = models.ManyToManyField(
+        Transazione, blank=True, related_name="incassi"
     )
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
