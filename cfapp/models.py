@@ -100,7 +100,6 @@ class Incasso(models.Model):
     transazione = models.ManyToManyField(
         Transazione,
         blank=True,
-        related_name="transazioni",
     )
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
