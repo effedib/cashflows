@@ -4,7 +4,7 @@ from .models import Incasso, Transazione, Committenti, Canali, TipologiaTransazi
 
 
 class IncassoInline(admin.TabularInline):
-    model = Incasso.transazione.through
+    model = Incasso.transazioni.through
     extra = 0
 
 
@@ -22,7 +22,7 @@ class TransazioneAdmin(admin.ModelAdmin):
     inlines = [IncassoInline]
 
     def numero_incassi(self, obj):
-        return obj.transazioni.count()
+        return obj.incassi.count()
 
     numero_incassi.short_description = "Numero di incassi"
 
