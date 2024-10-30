@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import Incasso, Transazione, Committenti, Canali, TipologiaTransazione
+from .models import (
+    Incasso,
+    Transazione,
+    Committenti,
+    Canali,
+    TipologiaTransazione,
+    CassaDelGiorno,
+)
 
 
 class IncassoInline(admin.TabularInline):
@@ -11,8 +18,8 @@ class IncassoInline(admin.TabularInline):
 @admin.register(TipologiaTransazione)
 class TipologiaTransazioneAdmin(admin.ModelAdmin):
     list_display = ("nome_transazione",)
-    search_fields = ("nome_transazione","tipo_transazione")
-    fields = ("nome_transazione","tipo_transazione")
+    search_fields = ("nome_transazione", "tipo_transazione")
+    fields = ("nome_transazione", "tipo_transazione")
 
 
 @admin.register(Transazione)
@@ -61,3 +68,4 @@ class IncassoAdmin(admin.ModelAdmin):
 
 admin.site.register(Committenti)
 admin.site.register(Canali)
+admin.site.register(CassaDelGiorno)
