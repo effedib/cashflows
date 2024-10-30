@@ -65,7 +65,7 @@ class Transazione(models.Model):
         verbose_name = "Transazione"
         verbose_name_plural = "Transazioni"
 
-    importo = models.DecimalField(decimal_places=2, max_digits=8, null=True)
+    importo = models.DecimalField(decimal_places=2, max_digits=8)
     tipologia = models.ForeignKey(
         TipologiaTransazione,
         on_delete=models.PROTECT,
