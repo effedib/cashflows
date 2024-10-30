@@ -5,7 +5,7 @@
 <h1>Modifica Incasso</h1>
 <form action="" method="post">{% csrf_token %}
   {{ form|crispy }}
-  <input type="submit" class="btn btn-success" value="Update">
+  <input type="submit" class="btn btn-success" value="Modifica">
   <a href="{% url 'incassi_view' %}" class="btn btn-info">Annulla</a>
 </form>
 {% endblock content %}

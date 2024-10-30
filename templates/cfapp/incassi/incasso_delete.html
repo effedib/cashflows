@@ -5,7 +5,7 @@
 <form action="" method="post">
   {% csrf_token %}
   <p>Sei sicuro di volere cancellare l'incasso con ricevuta: "{{ incasso.ricevuta }}"?</p>
-  <input type="submit" class="btn btn-danger" value="Delete">
+  <input type="submit" class="btn btn-danger" value="Cancella">
   <a href="{% url 'incassi_view' %}" class="btn btn-info">Annulla</a>
 </form>
 {% endblock content %}
