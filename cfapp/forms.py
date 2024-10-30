@@ -3,20 +3,23 @@ from .models import Incasso, Transazione
 
 
 class TransazioneForm(forms.ModelForm):
+    class Meta:
+        model = Transazione
+        fields = ["tipologia", "data", "incassi"]
+
     incassi = forms.ModelMultipleChoiceField(
         queryset=Incasso.objects.all(),
         required=False,
         widget=forms.CheckboxSelectMultiple,
     )
 
-    class Meta:
-        model = Transazione
-        fields = ["tipologia", "data", "importo", "incassi"]
-
     def save(self, commit=True):
         transazione = super().save(commit=commit)
         if commit:
-            transazione.incassi.set(self.cleaned_data["incassi"])
+            incassi = self.cleaned_data["incassi"]
+            transazione.importo = sum(incasso.importo for incasso in incassi)
+            transazione.incassi.set(incassi)
+            transazione.save()
         return transazione
 
 
