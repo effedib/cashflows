@@ -48,16 +48,20 @@ class TipologiaTransazione(models.Model):
     class Meta:
         verbose_name = "Tipologia transazione"
         verbose_name_plural = "Tipologie transazioni"
+    
+    class TipoTransazione(models.TextChoices):
+        ENTRATA = "Entrata"
+        USCITA = "Uscita"
 
-    tipologia_transazione = models.CharField(unique=True, max_length=255)
+    nome_transazione = models.CharField(unique=True, max_length=255)
+    tipo_transazione = models.CharField(choices=TipoTransazione, max_length=7, default=TipoTransazione.ENTRATA)
 
     def save(self, *args, **kwargs):
-        self.tipologia_transazione = self.tipologia_transazione.capitalize()
-
+        self.nome_transazione = self.nome_transazione.capitalize()
         super(TipologiaTransazione, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.tipologia_transazione}"
+        return f"{self.nome_transazione}"
 
 
 class Transazione(models.Model):
@@ -75,9 +79,18 @@ class Transazione(models.Model):
     data = models.DateField("data operazione")
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if self.tipologia.tipo_transazione == "Entrata" and self.importo > 0:
+            self.importo *= -1
+
+        super(Transazione, self).save(*args, **kwargs)
+
     def __str__(self) -> str:
         data = self.data.strftime("%d-%m-%Y")
         return f"{self.tipologia} / €{self.importo:.2f} / {data}"
+    
+    def get_absolute_url(self):
+        return reverse("transazione_detail_view", kwargs={"pk": self.pk})
 
 
 class Incasso(models.Model):

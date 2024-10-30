@@ -10,8 +10,9 @@ class IncassoInline(admin.TabularInline):
 
 @admin.register(TipologiaTransazione)
 class TipologiaTransazioneAdmin(admin.ModelAdmin):
-    list_display = ("tipologia_transazione",)
-    search_fields = ("tipologia_transazione",)
+    list_display = ("nome_transazione",)
+    search_fields = ("nome_transazione","tipo_transazione")
+    fields = ("nome_transazione","tipo_transazione")
 
 
 @admin.register(Transazione)
@@ -54,7 +55,7 @@ class IncassoAdmin(admin.ModelAdmin):
         "canale__canale",
         "committente__codice",
         "committente__committente",
-        "transazione__tipologia__tipologia_transazione",
+        "transazione__tipologia__nome_transazione",
     )
 
 
