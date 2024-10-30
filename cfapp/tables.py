@@ -51,20 +51,23 @@ class IncassoTable(tables.Table):
             self.columns.hide("__")
 
 
+class NumeroIncassiColumn(tables.Column):
+    def render(self, value):
+        return value.count
+
+
 class TransazioneTable(tables.Table):
     class Meta:
         model = Transazione
         order_by = "data"
         orderable = True
         template_name = "django_tables2/bootstrap.html"
-        fields = (
-            "data",
-            "importo",
-            "tipologia",
-        )
+        fields = ("data", "importo", "tipologia", "incassi")
 
     importo = ImportoColumn(attrs={"tf": {"class": "fw-bold"}})
     data = tables.DateTimeColumn(format="d/m/y")
+
+    incassi = NumeroIncassiColumn(verbose_name="Incassi Collegati")
 
     ___ = tables.TemplateColumn(
         template_code='<a href="{% url \'transazione_detail_view\' record.pk %}" class="btn btn-success">Dettaglio</a>'
