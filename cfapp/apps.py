@@ -6,4 +6,4 @@ class CfappConfig(AppConfig):
     name = "cfapp"
 
     def ready(self):
-        import cfapp.signals
+        import cfapp.signals  # noqa: F401
